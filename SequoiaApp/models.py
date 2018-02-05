@@ -12,6 +12,9 @@ class Remitter(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse("remitter_search")
+
 
 class Customer(models.Model):
     name = models.CharField(max_length=256)
@@ -26,6 +29,8 @@ class Customer(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse("customer_search")
 
 class RTGS(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name="RTGS")
