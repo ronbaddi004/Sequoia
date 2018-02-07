@@ -18,4 +18,8 @@ urlpatterns = [
         login_required(CustomerUpdateView.as_view()), name='customer_update'),
     url(r'^customer/(?P<pk>\d+)/delete/$',
         views.customer_delete, name='customer_delete'),
+    url(r'^rtgs/$', views.rtgs_list, name='rtgs_list'),
+    url(r'^rtgs/(?P<pk>\d+)/$', views.rtgs, name='rtgs'),
+    url(r'^rtgs/create/$', views.rtgs_create, name='rtgs_create'),
+    url(r'^rtgs/form/$', views.rtgs_form, name='rtgs_form'),
 ]

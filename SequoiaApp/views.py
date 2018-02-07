@@ -3,13 +3,13 @@ Importing reqiured packages
 """
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from django.shortcuts import get_object_or_404, HttpResponseRedirect, redirect, render
+from django.shortcuts import get_object_or_404, HttpResponseRedirect, redirect, render, render_to_response
 from django.utils.decorators import method_decorator
 from django.views.generic import UpdateView
 
 from .filters import RemitterFilter, CustomerFilter
-from .forms import RemitterForm, CustomerForm
-from .models import Remitter, Customer
+from .forms import RemitterForm, CustomerForm, RTGSForm
+from .models import Remitter, Customer, RTGS
 # Create your views here.
 
 @login_required
@@ -99,3 +99,45 @@ def customer_delete(request, pk=None):
     customer = get_object_or_404(Customer, pk=pk)
     customer.delete()
     return redirect("customer_search")
+
+@login_required
+def rtgs_create(request):
+    remitters = Remitter.objects.all()
+    form = RTGSForm(request.POST or None)
+    if form.is_valid():
+        form.save(commit=False)
+        print(request.POST)
+        rtgs = RTGS.objects.create(
+            customer=form.cleaned_data.get('name'),
+            remitter=form.cleaned_data.get('remitter'),
+            cheque_number=form.cleaned_data.get('cheque_number'),
+            amount_in_figure=form.cleaned_data.get('amount_in_figure'),
+            amount_in_word=form.cleaned_data.get('amount_in_word')
+        )
+        Customer.objects.create(
+            name=form.cleaned_data.get('name'),
+            bank_name=form.cleaned_data.get('bank_name'),
+            bank_account_number=form.cleaned_data.get('bank_account_number'),
+            bank_branch_name=form.cleaned_data.get('bank_branch_name'),
+            bank_ifsc_code=form.cleaned_data.get('bank_ifsc_code'),
+            PAN=form.cleaned_data.get('PAN'),
+            mobile_number=form.cleaned_data.get('mobile_number'),
+            GSTIN=form.cleaned_data.get('GSTIN')
+        )
+        return render_to_response("SequoiaApp/rtgs_form.html", {'rtgs': rtgs})
+    return render(request, 'SequoiaApp/rtgs_create.html', {'form':form, 'remitters': remitters})
+
+
+@login_required
+def rtgs_form(request):
+    return render(request, 'SequoiaApp/rtgs_form.html')
+
+@login_required
+def rtgs_list(request):
+    rtgs_list = RTGS.objects.all()
+    return render(request, 'SequoiaApp/rtgs_list.html', {'rtgs': rtgs_list})
+
+@login_required
+def rtgs(request, pk):
+    rtgs = get_object_or_404(RTGS, pk=pk)
+    return render(request, 'SequoiaApp/rtgs_form.html', {'rtgs': rtgs})
