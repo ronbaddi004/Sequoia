@@ -104,17 +104,10 @@ def customer_delete(request, pk=None):
 def rtgs_create(request):
     remitters = Remitter.objects.all()
     form = RTGSForm(request.POST or None)
+    print(request.POST)
     if form.is_valid():
-        form.save(commit=False)
-        print(request.POST)
-        rtgs = RTGS.objects.create(
-            customer=form.cleaned_data.get('name'),
-            remitter=form.cleaned_data.get('remitter'),
-            cheque_number=form.cleaned_data.get('cheque_number'),
-            amount_in_figure=form.cleaned_data.get('amount_in_figure'),
-            amount_in_word=form.cleaned_data.get('amount_in_word')
-        )
-        Customer.objects.create(
+        rtgsform = form.save(commit=False)
+        customer = Customer.objects.create(
             name=form.cleaned_data.get('name'),
             bank_name=form.cleaned_data.get('bank_name'),
             bank_account_number=form.cleaned_data.get('bank_account_number'),
@@ -123,6 +116,14 @@ def rtgs_create(request):
             PAN=form.cleaned_data.get('PAN'),
             mobile_number=form.cleaned_data.get('mobile_number'),
             GSTIN=form.cleaned_data.get('GSTIN')
+        )
+        print(type(customer))
+        rtgs = RTGS.objects.create(
+            customer=customer,
+            remitter=form.cleaned_data.get('remitter'),
+            cheque_number=form.cleaned_data.get('cheque_number'),
+            amount_in_figure=form.cleaned_data.get('amount_in_figure'),
+            amount_in_word=form.cleaned_data.get('amount_in_word')
         )
         return render_to_response("SequoiaApp/rtgs_form.html", {'rtgs': rtgs})
     return render(request, 'SequoiaApp/rtgs_create.html', {'form':form, 'remitters': remitters})
@@ -140,4 +141,5 @@ def rtgs_list(request):
 @login_required
 def rtgs(request, pk):
     rtgs = get_object_or_404(RTGS, pk=pk)
+    print(type(rtgs))
     return render(request, 'SequoiaApp/rtgs_form.html', {'rtgs': rtgs})
