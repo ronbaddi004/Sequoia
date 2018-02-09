@@ -1,7 +1,14 @@
 {% extends "base.html" %}
+
 {% load widget_tweaks %}
-{% block title %} Create RTGS - {{ block.super }} {% endblock title %}
-{% block content %}
+    {% block title %}
+    Create RTGS - {{ block.super }}
+    {% endblock title %}
+
+{% block CSSBlock %}
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+{% endblock CSSBlock %} {% block content %}
+
 <div class="container">
     <h1>Create RTGS:</h1>
     <div class="jumbotron" style="padding-top:3%; padding-bottom:3%; margin-bottom:8%">
@@ -13,17 +20,18 @@
                     <select name="remitter" class="form-control" required id="remitter">
                         <option value="" selected>---------</option>
                         {% for remitter in remitters %}
-                            <option value="{{remitter.id}}">{{ remitter.name }}</option>
+                        <option value="{{remitter.id}}">{{ remitter.name }}</option>
                         {% endfor %}
                     </select>
                 </div>
-                <!-- <div class="form-group col-sm-6 col-md-6">
-                    <label for="id_id">Customer Id:</label>
-                    <input type="text" name="id" maxlength="256" class="form-control" required id="id_id">
-                </div> -->
+                <input type="hidden" name="customer_id" maxlength="256" required="" id="id_id">
                 <div class="form-group col-sm-6 col-md-6">
                     <label for="id_name">Customer Name:</label>
-                    <input type="text" name="name" maxlength="256" class="form-control " required id="id_name" />
+                    <input type="text" autocomplete="off" name="name" maxlength="256" class="form-control " required id="id_name" list="id_name_data"
+                    />
+                    <datalist name="name" id="id_name_data">
+                        <option value="" selected id="replace_name_data">-</option>
+                    </datalist>
                 </div>
                 <div class="form-group col-sm-12 col-md-12">
                     <label for="id_amount_in_figure">Amount in figure:</label>
@@ -43,7 +51,8 @@
                 </div>
                 <div class="form-group col-sm-6 col-md-6">
                     <label for="id_bank_account_number">Bank account number:</label>
-                    <input type="text" name="bank_account_number" maxlength="256" class="form-control " required id="id_bank_account_number" />
+                    <input type="text" name="bank_account_number" maxlength="256" class="form-control " required id="id_bank_account_number"
+                    />
                 </div>
                 <div class="form-group col-sm-6 col-md-6">
                     <label for="id_bank_branch_name">Bank branch name:</label>
@@ -71,3 +80,120 @@
     </div>
 </div>
 {% endblock content %}
+
+{% block JScriptBlock %}
+<script src="http://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E="
+    crossorigin="anonymous"></script>
+<script type="text/javascript">
+    // using jQuery
+    var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+
+    var typingTimer;                 //timer identifier
+    var doneTypingInterval = 1000;   //time in ms (1 second)
+
+    //on keyup, start the countdown
+    $('#id_name').keyup(function () {
+        var id_name = $(this).val();
+        clearTimeout(typingTimer);
+        if (id_name.length >= 3) {
+            typingTimer = setTimeout(doneTyping, doneTypingInterval);
+        }
+    });
+
+    //user is "finished typing," do something
+    function doneTyping() {
+        //do something
+        $.ajax({
+            url: "{% url 'customer-autocomplete' %}",
+            data: {
+                'q': $("input[id=id_name]").val()
+            },
+            dataType: 'json',
+            success: function (data) {
+                customers = data.result;
+                if (customers) {
+                    // alert("Result: " + list);
+                }
+                /*
+                var id_name_data = $('#replace_name_data');
+                <option value="" selected id="replace_name_data">-</option>
+                $.each(customers, function(id, text) {
+                    id_name_data.replaceWith(
+                        $('<option></option>').val(id).html(text)
+                    );
+                });
+                */
+                var optionsValues = '<option value="" selected id="replace_name_data">-</option>';
+                $.each(customers, function (id, text) {
+                    optionsValues += '<option value="' + id + '">' + text + '</option>';
+                });
+                var options = $('#replace_name_data');
+                options.replaceWith(optionsValues);
+                /*
+                $("#id_name").autocomplete({
+                    source: list,
+                    minLength: 2
+                });
+                */
+            }
+        });
+    }
+
+    /*
+    $('#id_name').blur(function () {
+        var id_name = $(this).val();
+        console.log(id_name);
+    });
+    */
+
+    $('#id_name').on('autocompleteselect', function (e, ui) {
+        console.log("e" + e);
+        console.log("ui" + ui);
+    });
+
+    $("#id_name").change(function () {
+        var end = $(this).val();
+        $.post("{% url 'customer-get-data' %}",
+            {
+                "id": end,
+            },
+            function (data, status) {
+                console.log("id: " + end);
+                $("#id_id").val(end);
+                $("#id_name").val(data.name);
+                $("#id_bank_name").val(data.bank_name);
+                $("#id_bank_account_number").val(data.bank_account_number);
+                $("#id_bank_branch_name").val(data.bank_branch_name);
+                $("#id_bank_ifsc_code").val(data.bank_ifsc_code);
+                $("#id_PAN").val(data.PAN);
+                $("#id_mobile_number").val(data.mobile_number);
+                $("#id_GSTIN").val(data.GSTIN);
+            }
+        );
+    });
+
+    $("#searchbutton").click(function () {
+        $.post("{% url 'customer-get-data' %}",
+            {
+                "id": $("input[id=id_name]").val(),
+            },
+            function (data, status) {
+                alert("model: " + data.model + "\nStatus: " + status);
+            }
+        );
+    });
+</script>
+{% endblock JScriptBlock %}

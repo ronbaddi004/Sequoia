@@ -37,10 +37,18 @@
                                 <input class="form-check-input" type="checkbox"> Remember Password</label>
                         </div>
                     </div>
+                    <!-- TODO: Will be used later
+                    <div class="form-group">
+                        <div class="form-check">
+                            <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox"> First time logging in?</label>
+                        </div>
+                    </div>
+                    -->
                     <button class="btn btn-primary btn-block" type="submit">Login</button>
                 </form>
                 <div class="text-center">
-                    <a class="d-block small mt-3" href="register.html">Register an Account</a>
+                    <a class="d-block small mt-3" href="{% url 'disclaimer' %}">LEGAL DISCLAIMER</a>
                     <a class="d-block small" href="forgot-password.html">Forgot Password?</a>
                 </div>
             </div>
@@ -51,6 +59,14 @@
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
     <!-- Core plugin JavaScript-->
     <script src="{% static 'js/jquery.easing.min.js' %}"></script>
+    <!-- TODO: Will be used later
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fingerprintjs2/1.6.1/fingerprint2.min.js"></script>
+    <script>
+        new Fingerprint2().get(function (hashish, components) {
+            console.log(hashish);
+        });
+    </script>
+    -->
 </body>
 
 </html>
