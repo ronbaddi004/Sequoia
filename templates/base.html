@@ -1,6 +1,10 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+<!--
+    # TODO: Add a nice logo and "Sequoia"
+    # TODO: Add a disclaimer
+-->
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,29 +16,32 @@
     <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/dataTables.bootstrap4.css' %}">
     <link rel="stylesheet" href="{% static 'css/sb-admin.css' %}">
+    {% block CSSBlock %}
+    {% endblock CSSBlock %}
 </head>
+
 <body class="fixed-nav bg-dark" id="page-top">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
         <a href="{% url 'home' %}" class="navbar-brand">Sequoia</a>
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive"
             aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>                
+            <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
-                <li class="nav-item" data-toggle="tooltip" data-placement="right" title="RTGS">
+                <li class="nav-item {{ active_create_rtgs }}" data-toggle="tooltip" data-placement="right" title="RTGS">
                     <a class="nav-link" href="{% url 'rtgs_create' %}">
-                        <i class="fa fa-fw fa-link"></i>
-                        <span class="nav-link-text">RTGS</span>
+                        <i class="fa fa-fw fa-file"></i>
+                        <span class="nav-link-text">Create RTGS</span>
                     </a>
                 </li>
-                <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
+                <li class="nav-item {{ active_dashboard }}" data-toggle="tooltip" data-placement="right" title="Dashboard">
                     <a class="nav-link" href="/">
                         <i class="fa fa-fw fa-dashboard"></i>
                         <span class="nav-link-text">Dashboard</span>
                     </a>
                 </li>
-                <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Search">
+                <li class="nav-item {{ active_search }}" data-toggle="tooltip" data-placement="right" title="Search">
                     <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseComponents" data-parent="#exampleAccordion">
                         <i class="fa fa-fw fa-search"></i>
                         <span class="nav-link-text">Search</span>
@@ -57,42 +64,11 @@
                         <span class="nav-link-text">Users</span>
                     </a>
                     <ul class="sidenav-second-level collapse" id="collapseExamplePages">
-                        <li>
+                        <li class="{{ active_remitter_create }}">
                             <a href="{% url 'remitter_create' %}">Create Remitter</a>
                         </li>
-                        <li>
+                        <li class="{{ active_customer_create }}">
                             <a href="{% url 'customer_create' %}">Create Customer</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Menu Levels">
-                    <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMulti" data-parent="#exampleAccordion">
-                        <i class="fa fa-fw fa-sitemap"></i>
-                        <span class="nav-link-text">Menu Levels</span>
-                    </a>
-                    <ul class="sidenav-second-level collapse" id="collapseMulti">
-                        <li>
-                            <a href="#">Second Level Item</a>
-                        </li>
-                        <li>
-                            <a href="#">Second Level Item</a>
-                        </li>
-                        <li>
-                            <a href="#">Second Level Item</a>
-                        </li>
-                        <li>
-                            <a class="nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMulti2">Third Level</a>
-                            <ul class="sidenav-third-level collapse" id="collapseMulti2">
-                                <li>
-                                    <a href="#">Third Level Item</a>
-                                </li>
-                                <li>
-                                    <a href="#">Third Level Item</a>
-                                </li>
-                                <li>
-                                    <a href="#">Third Level Item</a>
-                                </li>
-                            </ul>
                         </li>
                     </ul>
                 </li>
@@ -192,6 +168,8 @@
         <!-- Custom scripts for this page-->
         <script src="{% static 'js/sb-admin-datatables.min.js' %}"></script>
         <script src="{% static 'js/sb-admin-charts.min.js' %}"></script>
+        {% block JScriptBlock %}
+        {% endblock JScriptBlock %}
     </div>
 </body>
 </html>
