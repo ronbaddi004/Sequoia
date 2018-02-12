@@ -129,23 +129,13 @@ def rtgs_create(request):
             customer = Customer()
 
         # if anything has been changed: update it
-        if customer.name != form.cleaned_data.get('name'):
-            customer.name = form.cleaned_data.get('name')
-        if customer.bank_name != form.cleaned_data.get('bank_name'):
-            customer.bank_name = form.cleaned_data.get('bank_name')
-        if customer.bank_branch_name != form.cleaned_data.get('bank_branch_name'):
-            customer.bank_branch_name = form.cleaned_data.get(
-                'bank_branch_name')
-        if customer.bank_ifsc_code != form.cleaned_data.get('bank_ifsc_code'):
-            customer.bank_ifsc_code = form.cleaned_data.get('bank_ifsc_code')
-        if customer.PAN != form.cleaned_data.get('PAN'):
-            customer.PAN = form.cleaned_data.get('PAN')
-        if customer.mobile_number != form.cleaned_data.get('mobile_number'):
-            customer.mobile_number = form.cleaned_data.get('mobile_number')
-        if customer.GSTIN != form.cleaned_data.get('GSTIN'):
-            customer.GSTIN = form.cleaned_data.get('GSTIN')
+        for key, value in form.cleaned_data.items():
+            if key in vars(customer).keys():
+                if (getattr(customer, key) == '' or getattr(customer, key) == None or getattr(customer, key) != value):
+                    setattr(customer, key, value)
         
         # finally
+        print("customer: {}".format(customer))
         customer.save()
 
         # use the customer instance created above
@@ -216,10 +206,10 @@ def customer_autocomplete(request):
 @login_required
 def customer_get_data(request):
     if request.method == 'POST':
-        # get the customer id from the POSt and cast it to an integer
-        customer_id = int(request.POST.get('id', None))
-        # print('"POST /ajax/customer/customer_get_data/" customer_id {}'.format(customer_id))
         try:
+            # get the customer id from the POSt and cast it to an integer
+            customer_id = int(request.POST.get('id', None))
+            # print('"POST /ajax/customer/customer_get_data/" customer_id {}'.format(customer_id))
             # get the customer instance
             customer = Customer.objects.get(id=customer_id)
 
@@ -238,8 +228,8 @@ def customer_get_data(request):
             return JsonResponse(customerJSON)
 
         # self-explanatory
-        except Customer.DoesNotExist:
-            return JsonResponse({'model': [], 'error': 'customer not present.'}, status=404)
+        except (Customer.DoesNotExist, ValueError) as ex:
+            return JsonResponse({'error': 'customer not present.'}, status=404)
 
     # if not "POST" request, return an error
     return JsonResponse({'Error': 'Invalid request.'}, status=403)
