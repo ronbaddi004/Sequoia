@@ -41,23 +41,25 @@ def remitter_create(request):
                 account_number=form.cleaned_data.get('account_number'),
                 mobile_number=form.cleaned_data.get('mobile_number'),
                 PAN=form.cleaned_data.get('PAN'),
-                GSTIN=form.cleaned_data.get('GSTIN')
+                GSTIN=form.cleaned_data.get('GSTIN'),
+                created_by=request.user
             )
-        return HttpResponseRedirect(reverse(remitter_search))
+            return HttpResponseRedirect(reverse(remitter_search))
     return render(request, 'SequoiaApp/remitter_create.html', {'form': form})
 
 
 @login_required
 def remitter_search(request):
     """This function is used to search Remitters"""
-    remitter_list = Remitter.objects.all()
+    user = request.user
+    remitter_list = Remitter.objects.filter(created_by=user)
     return render(request, 'SequoiaApp/remitter_search.html', {'filter': remitter_list})
 
 
 @method_decorator(login_required, name='dispatch')
 class RemitterUpdateView(UpdateView):
     """This function is used for Updating Remitter Data"""
-    fields = ('name', 'account_number', 'mobile_number', 'PAN')
+    fields = ('name', 'account_number', 'mobile_number', 'PAN', 'GSTIN')
     model = Remitter
 
 
@@ -84,7 +86,8 @@ def customer_create(request):
                 bank_ifsc_code=form.cleaned_data.get('bank_ifsc_code'),
                 PAN=form.cleaned_data.get('PAN'),
                 mobile_number=form.cleaned_data.get('mobile_number'),
-                GSTIN=form.cleaned_data.get('GSTIN')
+                GSTIN=form.cleaned_data.get('GSTIN'),
+                created_by=request.user
             )
             return HttpResponseRedirect(reverse(customer_search))
     return render(request, 'SequoiaApp/customer_create.html', {'form': form})
@@ -93,7 +96,8 @@ def customer_create(request):
 @login_required
 def customer_search(request):
     """This function is used to search Customers"""
-    customer_list = Customer.objects.all()
+    user = request.user
+    customer_list = Customer.objects.filter(created_by=user)
     return render(request, 'SequoiaApp/customer_search.html', {'filter': customer_list})
 
 
@@ -135,7 +139,7 @@ def rtgs_create(request):
                     setattr(customer, key, value)
         
         # finally
-        print("customer: {}".format(customer))
+        customer.created_by = request.user
         customer.save()
 
         # use the customer instance created above
@@ -144,7 +148,8 @@ def rtgs_create(request):
             remitter=form.cleaned_data.get('remitter'),
             cheque_number=form.cleaned_data.get('cheque_number'),
             amount_in_figure=form.cleaned_data.get('amount_in_figure'),
-            amount_in_word=form.cleaned_data.get('amount_in_word')
+            amount_in_word=form.cleaned_data.get('amount_in_word'),
+            created_by=request.user
         )
 
         # redirect to the RTGS view, so that when the user navigates back
@@ -164,8 +169,9 @@ def rtgs_form(request):
 
 
 @login_required
-def rtgs_list(request):
-    rtgs_list = RTGS.objects.all()
+def rtgs_search(request):
+    user = request.user
+    rtgs_list = RTGS.objects.filter(created_by=user)
     return render(request, 'SequoiaApp/rtgs_list.html', {'rtgs': rtgs_list})
 
 
