@@ -1,0 +1,54 @@
+{% extends "base.html" %} {% block title %} Search RTGS - {{ block.super }} {% endblock title %} {% block content %}
+<div class="card mb-3">
+    <div class="card-header">
+        <i class="fa fa-table"></i> RTGS Data:
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>RTGS Id</th>
+                        <th>Remitter Name</th>
+                        <th>Customer Name</th>
+                        <th>Amount in Figure</th>
+                        <th>Amount in Word</th>
+                        <th>Cheque Number</th>
+                        <th>Created On</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>RTGS Id</th>
+                        <th>Remitter Name</th>
+                        <th>Customer Name</th>
+                        <th>Amount in Figure</th>
+                        <th>Amount in Word</th>
+                        <th>Cheque Number</th>
+                        <th>Created On</th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    {% for rtgs in rtgs_list %}
+                    <tr>
+                        <td>{{ rtgs.pk }}</td>
+                        <td>
+                            <a href="{% url 'rtgs' rtgs.pk %}">{{ rtgs.remitter }}</a>
+                        </td>
+                        <td>{{ rtgs.customer }}</td>
+                        <td>{{ rtgs.amount_in_figure }}</td>
+                        <td>{{ rtgs.amount_in_word }}</td>
+                        <td>{{ rtgs.cheque_number }}</td>
+                        <td>{{ rtgs.created_on }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5">No data</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock content %}
