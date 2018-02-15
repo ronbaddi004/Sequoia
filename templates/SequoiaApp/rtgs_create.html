@@ -12,67 +12,81 @@
 <div class="container">
     <h1>Create RTGS:</h1>
     <div class="jumbotron" style="padding-top:3%; padding-bottom:3%; margin-bottom:8%">
-        <form method="POST">
+        <form method="POST" novalidate>
             {% csrf_token %}
             <div class="row">
                 <div class="form-group col-sm-6 col-md-6">
                     <label for="remitter">Remitter Name:</label>
-                    <select name="remitter" class="form-control" required id="remitter">
+                    <select name="remitter" class="form-control {% if form.remitter.errors %}is-invalid{% endif %}" required id="remitter">
                         <option value="" selected>---------</option>
                         {% for remitter in remitters %}
                         <option value="{{remitter.id}}">{{ remitter.name }}</option>
                         {% endfor %}
                     </select>
+                    <div class="invalid-feedback">
+                        {{ form.remitter.errors }}
+                    </div>
                 </div>
                 <input type="hidden" name="customer_id" maxlength="256" required="" id="id_id">
                 <div class="form-group col-sm-6 col-md-6">
                     <label for="id_name">Customer Name:</label>
-                    <input type="text" autocomplete="off" name="name" maxlength="256" class="form-control " required id="id_name" list="id_name_data"
+                    <input type="text" autocomplete="off" name="name" maxlength="256" class="form-control {% if form.name.errors %}is-invalid{% endif %}" required id="id_name" list="id_name_data"
                     />
                     <datalist name="name" id="id_name_data">
                         <option value="" selected id="replace_name_data">-</option>
                     </datalist>
+                    <div class="invalid-feedback">{{ form.name.errors }}</div>
                 </div>
                 <div class="form-group col-sm-12 col-md-12">
                     <label for="id_amount_in_figure">Amount in figure:</label>
-                    <input type="number" name="amount_in_figure" step="0.01" class="form-control " required id="id_amount_in_figure" />
+                    <input type="number" name="amount_in_figure" step="0.01" class="form-control {% if form.amount_in_figure.errors %}is-invalid{% endif %}" required id="id_amount_in_figure" />
+                    <div class="invalid-feedback">{{ form.amount_in_figure.errors }}</div>
                 </div>
                 <div class="form-group col-sm-12 col-md-12">
                     <label for="id_amount_in_word">Amount in word:</label>
-                    <input type="text" name="amount_in_word" maxlength="1024" class="form-control " required id="id_amount_in_word" />
+                    <input type="text" name="amount_in_word" maxlength="1024" class="form-control {% if form.amount_in_word.errors %}is-invalid{% endif %}" required id="id_amount_in_word" />                
+                    <div class="invalid-feedback">{{ form.amount_in_word.errors }}</div>
                 </div>
                 <div class="form-group col-sm-6 col-md-6">
                     <label for="cheque_number">Cheque Number:</label>
-                    <input type="text" name="cheque_number" maxlength="15" class="form-control " required id="id_cheque_number" />
+                    <input type="text" name="cheque_number" maxlength="15" class="form-control {% if form.cheque_number.errors %}is-invalid{% endif %}" required id="id_cheque_number" />
+                    <div class="invalid-feedback">{{ form.cheque_number.errors }}</div>
                 </div>
                 <div class="form-group col-sm-6 col-md-6">
                     <label for="id_bank_name">Bank name:</label>
-                    <input type="text" name="bank_name" maxlength="256" class="form-control " required id="id_bank_name" />
+                    <input type="text" name="bank_name" maxlength="256" class="form-control {% if form.bank_name.errors %}is-invalid{% endif %}" required id="id_bank_name" />
+                        <div class="invalid-feedback">{{ form.bank_name.errors }}</div>
                 </div>
                 <div class="form-group col-sm-6 col-md-6">
                     <label for="id_bank_account_number">Bank account number:</label>
-                    <input type="text" name="bank_account_number" maxlength="256" class="form-control " required id="id_bank_account_number"
+                    <input type="text" name="bank_account_number" maxlength="256" class="form-control {% if form.bank_account_number.errors %}is-invalid{% endif %}" required id="id_bank_account_number"
                     />
+                        <div class="invalid-feedback">{{ form.bank_account_number.errors }}</div>
                 </div>
                 <div class="form-group col-sm-6 col-md-6">
                     <label for="id_bank_branch_name">Bank branch name:</label>
-                    <input type="text" name="bank_branch_name" maxlength="256" class="form-control " required id="id_bank_branch_name" />
+                    <input type="text" name="bank_branch_name" maxlength="256" class="form-control {%if form.bank_branch_name.errors %}is-invalid{% endif %}" required id="id_bank_branch_name" />
+                        <div class="invalid-feedback">{{ form.bank_branch_name.errors }}</div>
                 </div>
                 <div class="form-group col-sm-6 col-md-6">
                     <label for="id_bank_ifsc_code">Bank ifsc code:</label>
-                    <input type="text" name="bank_ifsc_code" maxlength="256" class="form-control " required id="id_bank_ifsc_code" />
+                    <input type="text" name="bank_ifsc_code" maxlength="256" class="form-control {% if form.bank_ifsc_code.errors %}is-invalid{% endif %}" required id="id_bank_ifsc_code" />
+                        <div class="invalid-feedback">{{ form.bank_ifsc_code.errors }}</div>
                 </div>
                 <div class="form-group col-sm-6 col-md-6">
                     <label for="id_PAN">PAN:</label>
-                    <input type="text" name="PAN" maxlength="10" class="form-control " required id="id_PAN" />
+                    <input type="text" name="PAN" maxlength="10" class="form-control {% if form.PAN.errors %}is-invalid{% endif %}" required id="id_PAN" />
+                        <div class="invalid-feedback">{{ form.PAN.errors }}</div>
                 </div>
                 <div class="form-group col-sm-6 col-md-6">
                     <label for="id_mobile_number">Mobile number:</label>
-                    <input type="text" name="mobile_number" maxlength="10" class="form-control " required id="id_mobile_number" />
+                    <input type="text" name="mobile_number" maxlength="10" class="form-control {% if form.mobile_number.errors %}is-invalid{% endif %}" required id="id_mobile_number" />
+                        <div class="invalid-feedback">{{ form.mobile_number.errors }}</div>
                 </div>
                 <div class="form-group col-sm-6 col-md-6">
                     <label for="id_GSTIN">GSTIN:</label>
-                    <input type="text" name="GSTIN" maxlength="256" class="form-control " required id="id_GSTIN" />
+                    <input type="text" name="GSTIN" maxlength="256" class="form-control {% if form.GSTIN.errors %}is-invalid{% endif %}" required id="id_GSTIN" />
+                        <div class="invalid-feedback">{{ form.GSTIN.errors }}</div>
                 </div>
             </div>
             <button class="btn btn-primary" type="submit">Create</button>
@@ -124,40 +138,15 @@
             dataType: 'json',
             success: function (data) {
                 customers = data.result;
-                if (customers) {
-                    // alert("Result: " + list);
-                }
-                /*
-                var id_name_data = $('#replace_name_data');
-                <option value="" selected id="replace_name_data">-</option>
-                $.each(customers, function(id, text) {
-                    id_name_data.replaceWith(
-                        $('<option></option>').val(id).html(text)
-                    );
-                });
-                */
                 var optionsValues = '<option value="" selected id="replace_name_data">-</option>';
                 $.each(customers, function (id, text) {
                     optionsValues += '<option value="' + id + '">' + text + '</option>';
                 });
                 var options = $('#replace_name_data');
                 options.replaceWith(optionsValues);
-                /*
-                $("#id_name").autocomplete({
-                    source: list,
-                    minLength: 2
-                });
-                */
             }
         });
     }
-
-    /*
-    $('#id_name').blur(function () {
-        var id_name = $(this).val();
-        console.log(id_name);
-    });
-    */
 
     $('#id_name').on('autocompleteselect', function (e, ui) {
         console.log("e" + e);
