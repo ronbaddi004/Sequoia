@@ -18,7 +18,7 @@ class RTGSForm(forms.ModelForm):
     PAN = forms.CharField(max_length=10)
     mobile_number = forms.CharField(max_length=10, required=True)
     GSTIN = forms.CharField(max_length=15, validators=[GSTIN_Validator])
-    customer_id = forms.IntegerField()
+    customer_id = forms.CharField()
 
     class Meta:
         model = RTGS
