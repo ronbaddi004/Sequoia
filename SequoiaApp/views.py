@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.core import serializers
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404, HttpResponseRedirect, redirect, render, render_to_response
+from django.shortcuts import get_object_or_404, HttpResponseRedirect, redirect, render, render_to_response, Http404
 from django.utils.decorators import method_decorator
 from django.views.generic import UpdateView
 from django.forms.models import model_to_dict
@@ -52,7 +52,10 @@ def remitter_create(request):
 def remitter_search(request):
     """This function is used to search Remitters"""
     user = request.user
-    remitter_list = Remitter.objects.filter(created_by=user)
+    if user.is_superuser:
+        remitter_list = Remitter.objects.all()
+    else:
+        remitter_list = Remitter.objects.filter(created_by=user)
     return render(request, 'SequoiaApp/remitter_search.html', {'filter': remitter_list})
 
 
@@ -62,13 +65,30 @@ class RemitterUpdateView(UpdateView):
     fields = ('name', 'account_number', 'mobile_number', 'PAN', 'GSTIN')
     model = Remitter
 
+    def user_passes_test(self, request):
+        if request.user.is_authenticated:
+            self.object = self.get_object()
+            return self.object.created_by == request.user
+        else:
+            return False
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_superuser:
+            return super(RemitterUpdateView, self).dispatch(request, *args, **kwargs)
+        elif not self.user_passes_test(request):
+            return redirect("remitter_search")
+        return super(RemitterUpdateView, self).dispatch(request, *args, **kwargs)
+
 
 @login_required
 def remitter_delete(request, pk=None):
     """This function is used to delete Remitter"""
     remitter = get_object_or_404(Remitter, pk=pk)
-    remitter.delete()
-    return redirect("remitter_search")
+    if request.user == remitter.created_by or request.user.is_superuser:
+        remitter.delete()
+        return redirect("remitter_search")
+    else:
+        return redirect("remitter_search")
 
 
 @login_required
@@ -97,7 +117,10 @@ def customer_create(request):
 def customer_search(request):
     """This function is used to search Customers"""
     user = request.user
-    customer_list = Customer.objects.filter(created_by=user)
+    if user.is_superuser:
+        customer_list = Customer.objects.all()
+    else:
+        customer_list = Customer.objects.filter(created_by=user)
     return render(request, 'SequoiaApp/customer_search.html', {'filter': customer_list})
 
 
@@ -108,27 +131,43 @@ class CustomerUpdateView(UpdateView):
               'bank_ifsc_code', 'PAN', 'mobile_number', 'GSTIN')
     model = Customer
 
+    def user_passes_test(self, request):
+        if request.user.is_authenticated:
+            self.object = self.get_object()
+            return self.object.created_by == request.user
+        else:
+            return False
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_superuser:
+            return super(CustomerUpdateView, self).dispatch(request, *args, **kwargs)
+        elif not self.user_passes_test(request):
+            return redirect("remitter_search")
+        return super(CustomerUpdateView, self).dispatch(request, *args, **kwargs)
+
 
 @login_required
 def customer_delete(request, pk=None):
     """This function is used to delete Customers"""
     customer = get_object_or_404(Customer, pk=pk)
-    customer.delete()
-    return redirect("customer_search")
+    if request.user == customer.created_by or request.user.is_superuser:
+        customer.delete()
+        return redirect("customer_search")
+    else:
+        return redirect("customer_search")
 
 
 @login_required
 def rtgs_create(request):
     # get or create the form
     form = RTGSForm(request.POST or None)
-
     if form.is_valid():
         # Get the customer id (hidden field) from the form
         customer_id = form.cleaned_data.get('customer_id')
         try:
             # get the customer instance
             customer = Customer.objects.get(id=customer_id)
-        except Customer.DoesNotExist:
+        except (Customer.DoesNotExist, ValueError):
             # else create a new one
             customer = Customer()
 
@@ -156,8 +195,8 @@ def rtgs_create(request):
         # the browser doesn't POST again
         return redirect("rtgs", pk=rtgs.pk)
     
-    # fetch all the remitters to display as dropdown in the RTGS create form
-    remitters = Remitter.objects.all()
+    # fetch the remitters created by the current logged in user to display as dropdown in the RTGS create form
+    remitters = Remitter.objects.filter(created_by=request.user)
 
     # also: activate the "Create RTGS" in the side bar
     return render(request, 'SequoiaApp/rtgs_create.html', {'form': form, 'remitters': remitters, 'active_create_rtgs': 'active'})
@@ -172,13 +211,16 @@ def rtgs_form(request):
 def rtgs_search(request):
     user = request.user
     rtgs_list = RTGS.objects.filter(created_by=user)
-    return render(request, 'SequoiaApp/rtgs_list.html', {'rtgs': rtgs_list})
+    return render(request, 'SequoiaApp/rtgs_list.html', {'rtgs_list': rtgs_list})
 
 
 @login_required
 def rtgs(request, pk):
     rtgs = get_object_or_404(RTGS, pk=pk)
-    return render(request, 'SequoiaApp/rtgs_form.html', {'rtgs': rtgs})
+    if request.user == rtgs.created_by or request.user.is_superuser:
+        return render(request, 'SequoiaApp/rtgs_form.html', {'rtgs': rtgs})
+    else:
+        return redirect("rtgs_search")
 
 
 @login_required
