@@ -28,7 +28,7 @@ urlpatterns = [
     #rtgs urls
     url(r'^rtgs/create/$', views.rtgs_create, name='rtgs_create'),
     url(r'^rtgs/(?P<pk>\d+)/$', views.rtgs, name='rtgs'),
-    url(r'^rtgs/$', views.rtgs_list, name='rtgs_list'),
+    url(r'^rtgs/$', views.rtgs_search, name='rtgs_search'),
     # TODO need a delete view for RTGS
 
     # ajax urls

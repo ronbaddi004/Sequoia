@@ -34,6 +34,13 @@
                     <div class="form-group">
                         <div class="form-check">
                             <label class="form-check-label">
+                                <input id="check" type="checkbox" class="form-check-input">I agree to <a href="{% url "disclaimer" %}">terms & conditions</a>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-check">
+                            <label class="form-check-label">
                                 <input class="form-check-input" type="checkbox"> Remember Password</label>
                         </div>
                     </div>
@@ -45,10 +52,9 @@
                         </div>
                     </div>
                     -->
-                    <button class="btn btn-primary btn-block" type="submit">Login</button>
+                    <button id="btncheck" class="btn btn-dark btn-block" type="submit" disabled>Login</button>
                 </form>
                 <div class="text-center">
-                    <a class="d-block small mt-3" href="{% url 'disclaimer' %}">LEGAL DISCLAIMER</a>
                     <a class="d-block small" href="forgot-password.html">Forgot Password?</a>
                 </div>
             </div>
@@ -60,13 +66,19 @@
     <!-- Core plugin JavaScript-->
     <script src="{% static 'js/jquery.easing.min.js' %}"></script>
     <!-- TODO: Will be used later
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fingerprintjs2/1.6.1/fingerprint2.min.js"></script>
-    <script>
-        new Fingerprint2().get(function (hashish, components) {
-            console.log(hashish);
-        });
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fingerprintjs2/1.6.1/fingerprint2.min.js"></script>-->
+    <script type="text/javascript">
+        $('#check').change(function () {
+                if ($(this).is(':checked')==true) {
+                    $('#btncheck').addClass('btn-primary').removeClass('btn-dark');
+                }
+                else {
+                    $('#btncheck').removeClass('btn-primary').addClass('btn-dark');
+                }
+                $('#btncheck').prop("disabled", !this.checked);
+            });
+        
     </script>
-    -->
 </body>
 
 </html>

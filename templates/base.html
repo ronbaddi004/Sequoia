@@ -1,10 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<!--
-    # TODO: Add a nice logo and "Sequoia"
-    # TODO: Add a disclaimer
--->
+
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -48,7 +45,7 @@
                     </a>
                     <ul class="sidenav-second-level collapse" id="collapseComponents">
                         <li>
-                            <a href="">RTGS</a>
+                            <a href="{%url 'rtgs_search' %}">RTGS</a>
                         </li>
                         <li>
                             <a href="{%url 'remitter_search' %}">Remitter</a>
@@ -109,34 +106,18 @@
     </nav>
     <div class="content-wrapper">
         <div class="container" style="margin-bottom:5%;">
-            <!-- Breadcrumbs-->
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item">
-                    <a href="#">Dashboard</a>
-                </li>
-                {% block breadcrumb %}
-                <li class="breadcrumb-item active">
-                    My Dashboard
-                </li>
-                {% endblock breadcrumb %}
-            </ol>
-            <!-- Area Chart Example-->
             {% block content %} {% endblock content %}
         </div>
-        <!-- /.container-fluid-->
-        <!-- /.content-wrapper-->
         <footer class="sticky-footer">
             <div class="container">
                 <div class="text-center">
-                    <small>Copyright © Your Website 2018</small>
+                    <small>Copyright © 2018 Sequoia</small>
                 </div>
             </div>
         </footer>
-        <!-- Scroll to Top Button-->
         <a class="scroll-to-top rounded" href="#page-top">
             <i class="fa fa-angle-double-up fa-3x"></i>
         </a>
-        <!-- Logout Modal-->
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -154,18 +135,13 @@
                 </div>
             </div>
         </div>
-        <!-- Bootstrap core JavaScript-->
         <script src="{% static 'js/jquery.min.js' %}"></script>
         <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-        <!-- Core plugin JavaScript-->
         <script src="{% static 'js/jquery.easing.min.js' %}"></script>
-        <!-- Page level plugin JavaScript-->
         <script src="{% static 'js/Chart.min.js' %}"></script>
         <script src="{% static 'js/jquery.dataTables.js' %}"></script>
         <script src="{% static 'js/dataTables.bootstrap4.js' %}"></script>
-        <!-- Custom scripts for all pages-->
         <script src="{% static 'js/sb-admin.min.js' %}"></script>
-        <!-- Custom scripts for this page-->
         <script src="{% static 'js/sb-admin-datatables.min.js' %}"></script>
         <script src="{% static 'js/sb-admin-charts.min.js' %}"></script>
         {% block JScriptBlock %}

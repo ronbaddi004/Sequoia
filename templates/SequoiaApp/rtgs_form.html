@@ -313,9 +313,23 @@
             text-align: left
         }
     </style>
+    <script type="text/javascript">
+        function printpage() {
+            //Get the print button and put it into a variable
+            var printButton = document.getElementById("printpagebutton");
+            //Set the print button visibility to 'hidden' 
+            printButton.style.visibility = 'hidden';
+            //Print the page content
+            window.print()
+            //Set the print button to 'visible' again 
+            //[Delete this line if you want it to stay hidden after printing]
+            printButton.style.visibility = 'visible';
+        }
+    </script>
 </head>
 
 <body class="c20">
+    <input id="printpagebutton" type="button" value="Print" onclick="printpage()" />
     <p class="c19">
         <span class="c7 c14 c16">PRIME CO-OPERATIVE BANK LTD.</span>
     </p>
@@ -481,7 +495,7 @@
             <tr class="c8">
                 <td class="c15" colspan="1" rowspan="1">
                     <p class="c2">
-                        <span class="c9 c7">AMOUNT IN FIGURE &nbsp; &nbsp;: {{ rtgs.amount_in_figure }}</span>
+                        <span class="c9 c7">AMOUNT IN FIGURE &nbsp; &nbsp;: ₹{{ rtgs.amount_in_figure }}</span>
                     </p>
                 </td>
             </tr>
