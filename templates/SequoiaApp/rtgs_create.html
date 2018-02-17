@@ -31,16 +31,14 @@
                         {{ form.remitter.errors }}
                     </div>
                 </div>
-                <input type="hidden" name="customer_id" maxlength="256" id="id_id">
+                <input type="hidden" name="customer_id" maxlength="256" id="id_id" value={{form.customer_id.value}}>
                 <div class="form-group col-sm-6 col-md-6">
                     <label for="id_name">Customer Name:</label>
                     {% if form.name.value %}
-                        <input type="text" autocomplete="off" name="name" maxlength="256" value="{{form.name.value}}"
-                            class="form-control is-valid" required id="id_name" list="id_name_data"/>
-                    {% else %}
-                        <input type="text" autocomplete="off" name="name" maxlength="256" class="form-control {% if form.name.errors %}is-invalid{% endif %}"
-                            required id="id_name" list="id_name_data" />
-                    {% endif %}
+                    <input type="text" autocomplete="off" name="name" maxlength="256" value="{{form.name.value}}" class="form-control {% if form.name.errors %}is-invalid{% else%}is-valid{% endif %}"
+                        required id="id_name" list="id_name_data" /> {% else %}
+                    <input type="text" autocomplete="off" name="name" maxlength="256" class="form-control {% if form.name.errors %}is-invalid{% endif %}"
+                        required id="id_name" list="id_name_data" /> {% endif %}
                     <datalist name="name" id="id_name_data">
                         <option value="" selected id="replace_name_data">-</option>
                     </datalist>
@@ -49,95 +47,80 @@
                 <div class="form-group col-sm-12 col-md-12">
                     <label for="id_amount_in_figure">Amount in figure:</label>
                     {% if form.amount_in_figure.value %}
-                        <input type="number" name="amount_in_figure" step="0.01" value="{{form.amount_in_figure.value}}" class="form-control is-valid" required id="id_amount_in_figure" />
-                    {% else %}
-                        <input type="number" name="amount_in_figure" step="0.01" class="form-control {% if form.amount_in_figure.errors %}is-invalid{% endif %}"
-                            required id="id_amount_in_figure" />
-                    {% endif %}
+                    <input type="number" name="amount_in_figure" step="0.01" value="{{form.amount_in_figure.value}}" class="form-control {% if form.amount_in_figure.errors %}is-invalid{% else%}is-valid{% endif %}"
+                        required id="id_amount_in_figure" /> {% else %}
+                    <input type="number" name="amount_in_figure" step="0.01" class="form-control {% if form.amount_in_figure.errors %}is-invalid{% endif %}"
+                        required id="id_amount_in_figure" /> {% endif %}
                     <div class="invalid-feedback">{{ form.amount_in_figure.errors }}</div>
                 </div>
                 <div class="form-group col-sm-12 col-md-12">
                     <label for="id_amount_in_word">Amount in word:</label>
                     {% if form.amount_in_word.value %}
-                        <input type="text" name="amount_in_word" maxlength="1024" value="{{form.amount_in_word.value}}"
-                            class="form-control is-valid" required id="id_amount_in_word" />
-                    {% else %}
-                        <input type="text" name="amount_in_word" maxlength="1024" class="form-control {% if form.amount_in_word.errors %}is-invalid{% endif %}"
-                            required id="id_amount_in_word" />
-                    {% endif %}               
+                    <input type="text" name="amount_in_word" maxlength="1024" value="{{form.amount_in_word.value}}" class="form-control {% if form.amount_in_word.errors %}is-invalid{% else%}is-valid{% endif %}"
+                        required id="id_amount_in_word" /> {% else %}
+                    <input type="text" name="amount_in_word" maxlength="1024" class="form-control {% if form.amount_in_word.errors %}is-invalid{% endif %}"
+                        required id="id_amount_in_word" /> {% endif %}
                     <div class="invalid-feedback">{{ form.amount_in_word.errors }}</div>
                 </div>
                 <div class="form-group col-sm-6 col-md-6">
                     <label for="cheque_number">Cheque Number:</label>
                     {% if form.cheque_number.value %}
-                        <input type="text" name="cheque_number" maxlength="15" value="{{form.cheque_number.value}}"
-                            class="form-control is-valid" required id="id_cheque_number" />
-                    {% else %}
-                        <input type="text" name="cheque_number" maxlength="15" class="form-control {% if form.cheque_number.errors %}is-invalid{% endif %}"
-                            required id="id_cheque_number" />
-                    {% endif %}
+                    <input type="text" name="cheque_number" maxlength="15" value="{{form.cheque_number.value}}" class="form-control {% if form.cheque_number.errors %}is-invalid{% else%}is-valid{% endif %}"
+                        required id="id_cheque_number" /> {% else %}
+                    <input type="text" name="cheque_number" maxlength="15" class="form-control {% if form.cheque_number.errors %}is-invalid{% endif %}"
+                        required id="id_cheque_number" /> {% endif %}
                     <div class="invalid-feedback">{{ form.cheque_number.errors }}</div>
                 </div>
                 <div class="form-group col-sm-6 col-md-6">
                     <label for="id_bank_name">Bank name:</label>
                     {% if form.bank_name.value %}
-                    <input type="text" name="bank_name" maxlength="256" value="{{form.bank_name.value}}"
-                        class="form-control is-valid" required id="id_bank_name" />
-                    {% else %}
-                        <input type="text" name="bank_name" maxlength="256" class="form-control {% if form.bank_name.errors %}is-invalid{% endif %}"
-                            required id="id_bank_name" />
-                    {% endif %}
+                    <input type="text" name="bank_name" maxlength="256" value="{{form.bank_name.value}}" class="form-control {% if form.bank_name.errors %}is-invalid{% else%}is-valid{% endif %}"
+                        required id="id_bank_name" /> {% else %}
+                    <input type="text" name="bank_name" maxlength="256" class="form-control {% if form.bank_name.errors %}is-invalid{% endif %}"
+                        required id="id_bank_name" /> {% endif %}
                     <div class="invalid-feedback">{{ form.bank_name.errors }}</div>
                 </div>
                 <div class="form-group col-sm-6 col-md-6">
                     <label for="id_bank_account_number">Bank account number:</label>
                     {% if form.bank_account_number.value %}
-                        <input type="text" name="bank_account_number" maxlength="256" value="{{form.bank_account_number.value}}"
-                            class="form-control is-valid" required id="id_bank_account_number"/>
-                    {% else %}
-                        <input type="text" name="bank_account_number" maxlength="256" class="form-control {% if form.bank_account_number.errors %}is-invalid{% endif %}"
-                            required id="id_bank_account_number" />
-                    {% endif %}
+                    <input type="text" name="bank_account_number" maxlength="256" value="{{form.bank_account_number.value}}" class="form-control {% if form.bank_account_number.errors %}is-invalid{% else%}is-valid{% endif %}"
+                        required id="id_bank_account_number" /> {% else %}
+                    <input type="text" name="bank_account_number" maxlength="256" class="form-control {% if form.bank_account_number.errors %}is-invalid{% endif %}"
+                        required id="id_bank_account_number" /> {% endif %}
                     <div class="invalid-feedback">{{ form.bank_account_number.errors }}</div>
                 </div>
                 <div class="form-group col-sm-6 col-md-6">
                     <label for="id_bank_branch_name">Bank branch name:</label>
                     {% if form.bank_branch_name.value %}
-                        <input type="text" name="bank_branch_name" maxlength="256" value="{{form.bank_branch_name.value}}"
-                            class="form-control is-valid" required id="id_bank_branch_name" />
-                    {% else %}
-                        <input type="text" name="bank_branch_name" maxlength="256" class="form-control {%if form.bank_branch_name.errors %}is-invalid{% endif %}"
-                            required id="id_bank_branch_name" />
-                    {% endif %}
+                    <input type="text" name="bank_branch_name" maxlength="256" value="{{form.bank_branch_name.value}}" class="form-control {% if form.bank_branch_name.errors %}is-invalid{% else%}is-valid{% endif %}"
+                        required id="id_bank_branch_name" /> {% else %}
+                    <input type="text" name="bank_branch_name" maxlength="256" class="form-control {%if form.bank_branch_name.errors %}is-invalid{% endif %}"
+                        required id="id_bank_branch_name" /> {% endif %}
                     <div class="invalid-feedback">{{ form.bank_branch_name.errors }}</div>
                 </div>
                 <div class="form-group col-sm-6 col-md-6">
                     <label for="id_bank_ifsc_code">Bank ifsc code:</label>
                     {% if form.bank_ifsc_code.value %}
-                        <input type="text" name="bank_ifsc_code" maxlength="256" value="{{form.bank_ifsc_code.value}}"
-                            class="form-control is-valid" required id="id_bank_ifsc_code" />
-                    {% else %}
-                        <input type="text" name="bank_ifsc_code" maxlength="256" class="form-control {% if form.bank_ifsc_code.errors %}is-invalid{% endif %}"
-                            required id="id_bank_ifsc_code" />
-                    {% endif %}
+                    <input type="text" name="bank_ifsc_code" maxlength="256" value="{{form.bank_ifsc_code.value}}" class="form-control {% if form.bank_ifsc_code.errors %}is-invalid{% else%}is-valid{% endif %}"
+                        required id="id_bank_ifsc_code" /> {% else %}
+                    <input type="text" name="bank_ifsc_code" maxlength="256" class="form-control {% if form.bank_ifsc_code.errors %}is-invalid{% endif %}"
+                        required id="id_bank_ifsc_code" /> {% endif %}
                     <div class="invalid-feedback">{{ form.bank_ifsc_code.errors }}</div>
                 </div>
                 <div class="form-group col-sm-6 col-md-6">
                     <label for="id_PAN">PAN:</label>
                     {% if form.PAN.value %}
-                        <input type="text" name="PAN" maxlength="10" value="{{form.PAN.value}}"
-                            class="form-control is-valid" required id="id_PAN" />
-                    {% else %}
-                        <input type="text" name="PAN" maxlength="10" class="form-control {% if form.PAN.errors %}is-invalid{% endif %}" required
-                            id="id_PAN" />
-                    {% endif %}
+                    <input type="text" name="PAN" maxlength="10" value="{{form.PAN.value}}" class="form-control {% if form.PAN.errors %}is-invalid{% else%}is-valid{% endif %}"
+                        required id="id_PAN" /> {% else %}
+                    <input type="text" name="PAN" maxlength="10" class="form-control {% if form.PAN.errors %}is-invalid{% endif %}" required
+                        id="id_PAN" /> {% endif %}
                     <div class="invalid-feedback">{{ form.PAN.errors }}</div>
                 </div>
                 <div class="form-group col-sm-6 col-md-6">
                     <label for="id_mobile_number">Mobile number:</label>
                     {% if form.mobile_number.value %}
-                        <input type="text" name="mobile_number" maxlength="10" value="{{form.mobile_number.value}}"
-                            class="form-control is-valid" required id="id_mobile_number" />
+                    <input type="text" name="mobile_number" maxlength="10" value="{{form.mobile_number.value}}" class="form-control {% if form.mobile_number.errors %}is-invalid{% else%}is-valid{% endif %}"
+                        required id="id_mobile_number" />
                     {% else %}
                         <input type="text" name="mobile_number" maxlength="10" class="form-control {% if form.mobile_number.errors %}is-invalid{% endif %}"
                             required id="id_mobile_number" />
@@ -148,9 +131,9 @@
                     <label for="id_GSTIN">GSTIN:</label>
                     {% if form.GSTIN.value %}
                         <input type="text" name="GSTIN" maxlength="15" value="{{form.GSTIN.value}}"
-                            class="form-control {% if form.GSTIN.errors %}is-invalid{% else%}is-valid{% endif %}" required id="id_GSTIN" />
+                            class="form-control {% if form.GSTIN.errors %}is-invalid{% else%}is-valid{% endif %}" id="id_GSTIN" />
                     {% else %}
-                        <input type="text" name="GSTIN" maxlength="256" class="form-control {% if form.GSTIN.errors %}is-invalid{% endif %}" required
+                        <input type="text" name="GSTIN" maxlength="15" class="form-control {% if form.GSTIN.errors %}is-invalid{% endif %}"
                             id="id_GSTIN" />
                     {% endif %}
                     <div class="invalid-feedback">{{ form.GSTIN.errors }}</div>
