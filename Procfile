@@ -1,1 +1,1 @@
-web: gunicorn SequoiaProject:wsgi
+web: gunicorn SequoiaProject.wsgi
