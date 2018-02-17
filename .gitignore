@@ -110,3 +110,4 @@ ENV/
 
 # mypy
 .mypy_cache/
+SequoiaApp/migrations/0002_auto_20180217_1222.py
