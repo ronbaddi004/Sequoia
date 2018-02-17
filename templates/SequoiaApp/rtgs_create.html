@@ -131,9 +131,9 @@
                     <label for="id_GSTIN">GSTIN:</label>
                     {% if form.GSTIN.value %}
                         <input type="text" name="GSTIN" maxlength="15" value="{{form.GSTIN.value}}"
-                            class="form-control {% if form.GSTIN.errors %}is-invalid{% else%}is-valid{% endif %}" required id="id_GSTIN" />
+                            class="form-control {% if form.GSTIN.errors %}is-invalid{% else%}is-valid{% endif %}" id="id_GSTIN" />
                     {% else %}
-                        <input type="text" name="GSTIN" maxlength="256" class="form-control {% if form.GSTIN.errors %}is-invalid{% endif %}" required
+                        <input type="text" name="GSTIN" maxlength="15" class="form-control {% if form.GSTIN.errors %}is-invalid{% endif %}"
                             id="id_GSTIN" />
                     {% endif %}
                     <div class="invalid-feedback">{{ form.GSTIN.errors }}</div>
