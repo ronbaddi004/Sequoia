@@ -317,19 +317,25 @@
         function printpage() {
             //Get the print button and put it into a variable
             var printButton = document.getElementById("printpagebutton");
+            var createButton = document.getElementById("createbutton");
             //Set the print button visibility to 'hidden' 
             printButton.style.visibility = 'hidden';
+            createButton.style.visibility = 'hidden';
             //Print the page content
             window.print()
             //Set the print button to 'visible' again 
             //[Delete this line if you want it to stay hidden after printing]
             printButton.style.visibility = 'visible';
+            createButton.style.visibility = 'visible';
         }
     </script>
 </head>
 
 <body class="c20">
-    <input id="printpagebutton" type="button" value="Print" onclick="printpage()" />
+    <a href="{% url 'rtgs_create' %}">
+        <button style="margin-top:-10%" id="createbutton" type="submit">Create RTGS</button>
+    </a>
+    <input style="float: right; margin-top:-10%" id="printpagebutton" type="button" value="Print" onclick="printpage()" />
     <p class="c19">
         <span class="c7 c14 c16">PRIME CO-OPERATIVE BANK LTD.</span>
     </p>
