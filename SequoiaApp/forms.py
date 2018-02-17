@@ -5,9 +5,9 @@ from .validators import validate_GSTIN, getCheckDigitOfGSTIN
 from django.core.validators import RegexValidator
 
 PAN_Validator = RegexValidator(
-    r'\w{5}\d{4}\w', "Please make sure you have entered correct PAN")
+    r'[a-zA-Z]{5}\d{4}[a-zA-Z]$', "Please make sure you have entered correct PAN")
 GSTIN_Validator = RegexValidator(
-    r'\d{2}\w{5}\d{4}\w\dZ\d', "Please make sure you have entered correct GSTIN")
+    r'\d{2}[a-zA-Z]{5}\d{4}[a-zA-Z]\d[zZ]\d', "Please make sure you have entered correct GSTIN")
 
 class RTGSForm(forms.ModelForm):
     name = forms.CharField(max_length=256)
@@ -19,7 +19,7 @@ class RTGSForm(forms.ModelForm):
     bank_ifsc_code = forms.CharField(max_length=256, required=True)
     PAN = forms.CharField(max_length=10, validators=[PAN_Validator])
     mobile_number = forms.CharField(max_length=10, required=True)
-    GSTIN = forms.CharField(max_length=15, validators=[GSTIN_Validator])
+    GSTIN = forms.CharField(max_length=15, required=False, validators=[GSTIN_Validator])
     customer_id = forms.CharField()
 
     class Meta:
