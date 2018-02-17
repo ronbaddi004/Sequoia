@@ -25,7 +25,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', '5s$e1*g82adsfaaz6)2x(e6+c$9a#vkj!0a16
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['yielder.herokuapp.com/', '']
+ALLOWED_HOSTS = ['yielder.herokuapp.com', '']
 
 
 # Application definition
