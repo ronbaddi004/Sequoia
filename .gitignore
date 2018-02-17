@@ -111,5 +111,6 @@ ENV/
 # mypy
 .mypy_cache/
 SequoiaApp/migrations/0002_auto_20180217_1222.py
+SequoiaApp/migrations/0001_initial.py
 SequoiaProject/old_settings.py
 SequoiaProject/settings/local.py
